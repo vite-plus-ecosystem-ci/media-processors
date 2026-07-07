@@ -4,3 +4,13 @@ packages:
 
 onlyBuiltDependencies:
   - esbuild
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.0.0-commit.fd1ae7eab160c92f3907a20e80e92d2e87403c20
+  vite-plus: 0.0.0-commit.fd1ae7eab160c92f3907a20e80e92d2e87403c20
+overrides:
+  vite: "catalog:"
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
