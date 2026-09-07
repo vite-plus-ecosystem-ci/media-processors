@@ -7,6 +7,11 @@ on:
       - "LICENSE"
       - "NOTICE"
 
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+      - NOTICE
 permissions:
   contents: read
 
@@ -36,7 +41,7 @@ jobs:
   slack_notify:
     needs: [ci]
     runs-on: ubuntu-slim
-    if: ${{ !cancelled() }}
+    if: ${{ github.repository_owner != 'vite-plus-ecosystem-ci' && (!cancelled()) }}
     permissions:
       actions: read
     steps:
