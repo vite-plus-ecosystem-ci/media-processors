@@ -1,3 +1,4 @@
+# リリース検証用の PR チェック。上流に同等の PR チェックが追加されたら削除する。
 name: ci
 
 on:
@@ -7,6 +8,7 @@ on:
       - "LICENSE"
       - "NOTICE"
 
+  pull_request:
 permissions:
   contents: read
 
@@ -29,6 +31,8 @@ jobs:
       - run: vp --version
       - run: vp install
       - run: vp run build
+      - name: Check the preview toolchain
+        run: vp check
       - run: vp run lint
       - run: vp run typecheck
       - run: vp run test
@@ -36,7 +40,7 @@ jobs:
   slack_notify:
     needs: [ci]
     runs-on: ubuntu-slim
-    if: ${{ !cancelled() }}
+    if: ${{ github.repository_owner != 'vite-plus-ecosystem-ci' && (!cancelled()) }}
     permissions:
       actions: read
     steps:
@@ -47,3 +51,4 @@ jobs:
           slack_webhook: ${{ secrets.SLACK_WEBHOOK }}
           slack_channel: media-processors
           notify_mode: failure_and_fixed
+        if: ${{ github.repository_owner != 'vite-plus-ecosystem-ci' }}
