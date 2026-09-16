@@ -7,11 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     throw new Error("Unsupported platform");
   }
 
-  const assetsPath = ".";
-  const processor = new VirtualBackgroundProcessor(assetsPath);
+  const assetsPath = ".",
+   processor = new VirtualBackgroundProcessor(assetsPath),
 
-  const elapsedElement = document.querySelector("#elapsed");
-  const fpsElement = document.querySelector("#fps");
+   elapsedElement = document.querySelector("#elapsed"),
+   fpsElement = document.querySelector("#fps");
   setInterval(() => {
     if (elapsedElement !== null) {
       const elapsed = processor.getAverageProcessedTimeMs() / 1000;
@@ -24,12 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 300);
 
   async function getUserMedia() {
-    const deviceSelect = document.querySelector<HTMLSelectElement>("#videoDevice");
-    const fpsInput = document.querySelector<HTMLInputElement>("#videoFps");
-    const heightInput = document.querySelector<HTMLInputElement>("#videoHeight");
-    const widthInput = document.querySelector<HTMLInputElement>("#videoWidth");
+    const deviceSelect = document.querySelector<HTMLSelectElement>("#videoDevice"),
+     fpsInput = document.querySelector<HTMLInputElement>("#videoFps"),
+     heightInput = document.querySelector<HTMLInputElement>("#videoHeight"),
+     widthInput = document.querySelector<HTMLInputElement>("#videoWidth"),
 
-    const constraints = {
+     constraints = {
       deviceId: deviceSelect === null ? undefined : deviceSelect.value,
       frameRate: { ideal: fpsInput === null ? 30 : Number(fpsInput.value) },
       height: heightInput === null ? 480 : Number(heightInput.value),
@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
     isFirst = false;
 
     void navigator.mediaDevices.enumerateDevices().then((devices) => {
-      const videoDevices = devices.filter((device) => device.kind === "videoinput" && device.label);
-      const select = document.querySelector<HTMLSelectElement>("#videoDevice");
+      const videoDevices = devices.filter((device) => device.kind === "videoinput" && device.label),
+       select = document.querySelector<HTMLSelectElement>("#videoDevice");
       if (select === null) {
         return;
       }
@@ -94,8 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      let blurRadius = 0;
-      let backgroundImage: HTMLImageElement | undefined;
+      let blurRadius = 0,
+       backgroundImage: HTMLImageElement | undefined;
       switch (virtualBackgroundType.value) {
         case "blur-5": {
           blurRadius = 5;

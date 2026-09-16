@@ -8,11 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const processor = new NoiseSuppressionProcessor();
 
-  let audioCtx: AudioContext | undefined;
-  let analyserOriginal: AnalyserNode | undefined;
-  let analyserProcessed: AnalyserNode | undefined;
-  let sourceOriginal: MediaStreamAudioSourceNode | undefined;
-  let sourceProcessed: MediaStreamAudioSourceNode | undefined;
+  let audioCtx: AudioContext | undefined,
+   analyserOriginal: AnalyserNode | undefined,
+   analyserProcessed: AnalyserNode | undefined,
+   sourceOriginal: MediaStreamAudioSourceNode | undefined,
+   sourceProcessed: MediaStreamAudioSourceNode | undefined;
 
   function initAudioAnalysersIfNeed() {
     if (audioCtx === undefined) {
@@ -127,8 +127,8 @@ document.addEventListener("DOMContentLoaded", () => {
       visualize(analyser, canvas);
     });
 
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+    const bufferLength = analyser.frequencyBinCount,
+     dataArray = new Uint8Array(bufferLength);
     analyser.getByteTimeDomainData(dataArray);
 
     const canvasCtx = canvas.getContext("2d");
@@ -155,8 +155,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const sliceWidth = canvas.width / bufferLength;
     let x = 0;
     for (let i = 0; i < bufferLength; i++) {
-      const v = dataArray[i] / 128;
-      const y = (v * canvas.height) / 2;
+      const v = dataArray[i] / 128,
+       y = (v * canvas.height) / 2;
 
       if (i === 0) {
         canvasCtx.moveTo(x, y);

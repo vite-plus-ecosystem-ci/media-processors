@@ -1,7 +1,7 @@
-const WASM_BASE64 = "__WASM__";
+const WASM_BASE64 = "__WASM__",
 
-const AUDIO_WORKLET_PROCESSOR_CODE = `__AUDIO_PROCESSOR__`;
-const AUDIO_WORKLET_PROCESSOR_NAME = "mp4-media-stream-audio-worklet-processor";
+ AUDIO_WORKLET_PROCESSOR_CODE = `__AUDIO_PROCESSOR__`,
+ AUDIO_WORKLET_PROCESSOR_NAME = "mp4-media-stream-audio-worklet-processor";
 
 /**
  * {@link Mp4MediaStream.play} に指定可能なオプション
@@ -15,8 +15,8 @@ interface PlayOptions {
   repeat?: boolean;
 }
 
-const AUDIO_DECODER_ID = 0;
-const VIDEO_DECODER_ID = 1;
+const AUDIO_DECODER_ID = 0,
+ VIDEO_DECODER_ID = 1;
 
 /**
  * MP4 を入力にとって、それを再生する MediaStream を生成するクラス
@@ -61,8 +61,8 @@ class Mp4MediaStream {
   static async load(mp4: Blob): Promise<Mp4MediaStream> {
     // インポート関数の中で this を参照したいけど、この時点ではまだ作成されていないので
     // 間接的に参照するようにする
-    const ref: { stream?: Mp4MediaStream | undefined } = { stream: undefined };
-    const importObject = {
+    const ref: { stream?: Mp4MediaStream | undefined } = { stream: undefined },
+     importObject = {
       env: {
         closeDecoder(playerId: number, decoderId: number) {
           if (ref.stream) {
@@ -109,13 +109,13 @@ class Mp4MediaStream {
           }
         },
       },
-    };
-    const wasmResults = await WebAssembly.instantiateStreaming(
+    },
+     wasmResults = await WebAssembly.instantiateStreaming(
       fetch(`data:application/wasm;base64,${WASM_BASE64}`),
       importObject,
-    );
+    ),
 
-    const stream = new Mp4MediaStream(wasmResults.instance);
+     stream = new Mp4MediaStream(wasmResults.instance);
     ref.stream = stream;
 
     const mp4Bytes = new Uint8Array(await mp4.arrayBuffer());
@@ -183,14 +183,14 @@ class Mp4MediaStream {
   }
 
   private async loadMp4(mp4Bytes: Uint8Array): Promise<{ audio: boolean; video: boolean }> {
-    const mp4WasmBytes = this.toWasmBytes(mp4Bytes);
-    const resultWasmJson = (this.wasm.exports["loadMp4"] as CallableFunction)(
+    const mp4WasmBytes = this.toWasmBytes(mp4Bytes),
+     resultWasmJson = (this.wasm.exports["loadMp4"] as CallableFunction)(
       this.engine,
       mp4WasmBytes,
-    );
+    ),
 
     // MP4 内に含まれる映像・音声を WebCodecs のデコーダー扱えるかどうかをチェックする
-    const info = this.wasmResultToValue(resultWasmJson) as Mp4Info;
+     info = this.wasmResultToValue(resultWasmJson) as Mp4Info;
     for (const config of info.audioConfigs) {
       if (!(await AudioDecoder.isConfigSupported(config)).supported) {
         throw new Error(`Unsupported audio decoder configuration: ${JSON.stringify(config)}`);
@@ -293,8 +293,8 @@ class Mp4MediaStream {
     // 一つ前のデコーダーの終了処理が進行中の場合に備えて、ここでも close を呼び出して終了を待機する
     await player.closeAudioDecoder();
 
-    const config = this.wasmJsonToValue(configWasmJson) as AudioDecoderConfig;
-    const init = {
+    const config = this.wasmJsonToValue(configWasmJson) as AudioDecoderConfig,
+     init = {
       error: async (error: DOMException) => {
         // デコードエラーが発生した場合には再生を停止する
         await this.stopPlayer(playerId);
@@ -388,10 +388,10 @@ class Mp4MediaStream {
   }
 
   private wasmJsonToValue(wasmJson: number): object {
-    const offset = (this.wasm.exports["vecOffset"] as CallableFunction)(wasmJson);
-    const len = (this.wasm.exports["vecLen"] as CallableFunction)(wasmJson);
-    const buffer = new Uint8Array(this.memory.buffer, offset, len);
-    const value = JSON.parse(new TextDecoder("utf-8").decode(buffer));
+    const offset = (this.wasm.exports["vecOffset"] as CallableFunction)(wasmJson),
+     len = (this.wasm.exports["vecLen"] as CallableFunction)(wasmJson),
+     buffer = new Uint8Array(this.memory.buffer, offset, len),
+     value = JSON.parse(new TextDecoder("utf-8").decode(buffer));
 
     // Wasm 側で所有権は放棄されているので、解放するのは呼び出し側の責務
     (this.wasm.exports["freeVec"] as CallableFunction)(wasmJson);
@@ -414,8 +414,8 @@ class Mp4MediaStream {
 
   private toWasmBytes(bytes: Uint8Array): number {
     // ここで割り当てられたメモリ領域を解放するのは Wasm 側の責務
-    const wasmBytes = (this.wasm.exports["allocateVec"] as CallableFunction)(bytes.length);
-    const wasmBytesOffset = (this.wasm.exports["vecOffset"] as CallableFunction)(wasmBytes);
+    const wasmBytes = (this.wasm.exports["allocateVec"] as CallableFunction)(bytes.length),
+     wasmBytesOffset = (this.wasm.exports["vecOffset"] as CallableFunction)(wasmBytes);
     new Uint8Array(this.memory.buffer, wasmBytesOffset, bytes.length).set(bytes);
     return wasmBytes;
   }

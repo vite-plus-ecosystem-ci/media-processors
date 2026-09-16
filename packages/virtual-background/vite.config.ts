@@ -12,12 +12,12 @@ const banner = `/**
  * @author: ${pkg.author}
  * @license: ${pkg.license}
  **/
-`;
+`,
 
 // Mediapipe の IIFE は SelfieSegmentation を動的に exports へ設定するが、
 // Rolldown の静的解析では named export として認識できないため明示的な代入文を追加する
 // Ref: https://github.com/google/mediapipe/issues/2883
-const mediapipeWorkaround = () => ({
+ mediapipeWorkaround = () => ({
   load(id: string) {
     if (path.basename(id) === "selfie_segmentation.js") {
       let code = fs.readFileSync(id, "utf8");

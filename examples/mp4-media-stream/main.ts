@@ -37,13 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const repeatInput = document.querySelector<HTMLInputElement>("#repeat");
-    const options = {
+    const repeatInput = document.querySelector<HTMLInputElement>("#repeat"),
+     options = {
       repeat: repeatInput === null ? false : repeatInput.checked,
-    };
-    const stream = await mp4MediaStream.play(options);
+    },
+     stream = await mp4MediaStream.play(options),
 
-    const output = document.querySelector<HTMLVideoElement>("#output");
+     output = document.querySelector<HTMLVideoElement>("#output");
     if (output === null) {
       return;
     }

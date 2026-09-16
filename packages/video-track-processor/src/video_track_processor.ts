@@ -102,18 +102,18 @@ abstract class Processor {
   }
 
   recordStartFrame() {
-    const now = performance.now();
-    const idx = this.count % this.numFramesToRecord;
+    const now = performance.now(),
+     idx = this.count % this.numFramesToRecord;
     this.currentFps = this.numFramesToRecord / ((now - (this.startTimes[idx] ?? 0)) / 1000);
     this.startTimes[idx] = now;
   }
 
   recordStopFrame() {
-    const now = performance.now();
-    const idx = this.count % this.numFramesToRecord;
-    const prevTime = this.processTimes[idx] ?? 0;
-    const startTime = this.startTimes[idx] ?? 0;
-    const processTime = now - startTime;
+    const now = performance.now(),
+     idx = this.count % this.numFramesToRecord,
+     prevTime = this.processTimes[idx] ?? 0,
+     startTime = this.startTimes[idx] ?? 0,
+     processTime = now - startTime;
     this.currentSumProcessedTimeMs = this.currentSumProcessedTimeMs - prevTime + processTime;
     this.processTimes[this.count % this.numFramesToRecord] = processTime;
     this.count++;
@@ -162,9 +162,9 @@ class BreakoutBoxProcessor extends Processor {
               this.stopProcessing();
               return;
             }
-            const { timestamp, duration } = frame;
+            const { timestamp, duration } = frame,
             // HTMLVideoElementと等価に扱いつつ、mediapipeに渡す際のパフォーマンスが良いのでImageBitmapを使う。
-            const image = await createImageBitmap(frame);
+             image = await createImageBitmap(frame);
             // oxlint-disable-next-line typescript-eslint/no-unsafe-member-access -- oxlint が @types/dom-mediacapture-transform のグローバル型を解決できないための偽陽性
             frame.close();
             const processedImageCanvas = await this.callback(image);
@@ -224,9 +224,9 @@ class RequestVideoFrameCallbackProcessor extends Processor {
     // 処理後の映像フレームを書き込むための canvas を生成する
     // CaptureStream() を使いたいので OffscreenCanvas にはできない
     // oxlint-disable-next-line typescript-eslint/no-unsafe-member-access -- oxlint が @types/dom-mediacapture-transform のグローバル型を解決できないための偽陽性
-    const width = track.getSettings().width ?? 0;
+    const width = track.getSettings().width ?? 0,
     // oxlint-disable-next-line typescript-eslint/no-unsafe-member-access -- oxlint が @types/dom-mediacapture-transform のグローバル型を解決できないための偽陽性
-    const height = track.getSettings().height ?? 0;
+     height = track.getSettings().height ?? 0;
     this.canvas = document.createElement("canvas");
     this.canvas.width = width;
     this.canvas.height = height;
@@ -251,8 +251,8 @@ class RequestVideoFrameCallbackProcessor extends Processor {
     });
     await this.video.play();
 
-    const stream = this.canvas.captureStream();
-    const track = stream.getVideoTracks()[0];
+    const stream = this.canvas.captureStream(),
+     track = stream.getVideoTracks()[0];
     if (track === undefined) {
       throw new Error("Failed to get video track from canvas capture stream");
     }

@@ -74,13 +74,13 @@ interface ImageRegion {
  * これは {@link VirtualBackgroundProcessorOptions.backgroundImageRegion} オプションのデフォルトの挙動です
  */
 function cropBackgroundImageCenter(videoFrame: ImageSize, backgroundImage: ImageSize): ImageRegion {
-  let x = 0;
-  let y = 0;
-  let { width } = backgroundImage;
-  let { height } = backgroundImage;
+  let x = 0,
+   y = 0,
+   { width } = backgroundImage,
+   { height } = backgroundImage;
 
-  const videoFrameRatio = videoFrame.width / videoFrame.height;
-  const backgroundImageRatio = backgroundImage.width / backgroundImage.height;
+  const videoFrameRatio = videoFrame.width / videoFrame.height,
+   backgroundImageRatio = backgroundImage.width / backgroundImage.height;
   if (backgroundImageRatio < videoFrameRatio) {
     const newHeight = videoFrame.height * (backgroundImage.width / videoFrame.width);
     y = Math.round((height - newHeight) / 2);
@@ -120,8 +120,8 @@ class VirtualBackgroundProcessor {
     this.trackProcessor = new VideoTrackProcessor();
 
     // セグメンテーションモデルのロード準備
-    const config: SelfieSegmentationConfig = {};
-    const trimmedAssetsPath = trimLastSlash(assetsPath);
+    const config: SelfieSegmentationConfig = {},
+     trimmedAssetsPath = trimLastSlash(assetsPath);
     config.locateFile = (file: string) => `${trimmedAssetsPath}/${file}`;
     this.segmentation = new SelfieSegmentation(config);
   }
@@ -157,11 +157,11 @@ class VirtualBackgroundProcessor {
     options: VirtualBackgroundProcessorOptions = {},
   ): Promise<MediaStreamVideoTrack> {
     // oxlint-disable-next-line typescript-eslint/no-unsafe-member-access -- oxlint が @types/dom-mediacapture-transform のグローバル型を解決できないための偽陽性
-    const initialWidth = track.getSettings().width ?? 0;
+    const initialWidth = track.getSettings().width ?? 0,
     // oxlint-disable-next-line typescript-eslint/no-unsafe-member-access -- oxlint が @types/dom-mediacapture-transform のグローバル型を解決できないための偽陽性
-    const initialHeight = track.getSettings().height ?? 0;
-    const canvas = createOffscreenCanvas(initialWidth, initialHeight);
-    const canvasCtx = canvas.getContext("2d", {
+     initialHeight = track.getSettings().height ?? 0,
+     canvas = createOffscreenCanvas(initialWidth, initialHeight),
+     canvasCtx = canvas.getContext("2d", {
       desynchronized: true,
       willReadFrequently: false, // ここをtrueにするとCPU-GPUメモリ転送が発生して遅くなる
     }) as OffscreenCanvasRenderingContext2D | null;
@@ -315,8 +315,8 @@ class VirtualBackgroundProcessor {
     }
 
     if (options.backgroundImage !== undefined) {
-      const decideRegion = options.backgroundImageRegion ?? cropBackgroundImageCenter;
-      const region = decideRegion({ height, width }, options.backgroundImage);
+      const decideRegion = options.backgroundImageRegion ?? cropBackgroundImageCenter,
+       region = decideRegion({ height, width }, options.backgroundImage);
       tmpCanvasCtx.drawImage(
         options.backgroundImage,
         region.x,
