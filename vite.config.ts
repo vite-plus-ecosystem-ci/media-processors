@@ -25,6 +25,8 @@ export default defineConfig({
       style: "error",
     },
     rules: {
+      // 既存の個別変数宣言を維持する
+      "one-var": "off",
       // ===== eslint: 無効化ルール =====
       // 日本語コメントが先頭小文字として誤検知されるため無効化
       "capitalized-comments": "off",
