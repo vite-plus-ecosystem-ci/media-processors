@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/dom-mediacapture-transform": "0.1.12",
+    "@types/node": "^22.0.0",
     "@typescript/typescript6": "6.0.2",
     "esbuild": "^0.25.0",
     "jsdom": "30.0.0",

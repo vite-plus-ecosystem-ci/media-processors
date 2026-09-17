@@ -46,6 +46,7 @@ export default defineConfig({
       "sort-imports": "off",
       // オブジェクトキーの並び順は論理的な順序を優先するため無効化
       "sort-keys": "off",
+      "one-var": "off",
       // ループ内の continue は早期スキップとして可読性を高めるため無効化
       "no-continue": "off",
       // let 宣言後に条件分岐で代入するパターンは一般的なため無効化
