@@ -105,6 +105,8 @@ export default defineConfig({
 
       // 未使用パラメータやプレースホルダーにアンダースコア接頭辞を使用するため無効化
       "no-underscore-dangle": "off",
+      // 変数宣言は 1 文 1 変数のスタイルのため無効化 (oxlint 更新で style カテゴリから検出されるようになった)
+      "one-var": "off",
 
       // ===== eslint: 危険なコードの禁止 =====
       // console.log の使用を禁止
